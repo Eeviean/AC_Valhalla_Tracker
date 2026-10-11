@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assassin's Creed Valhalla - 100% Tracker</title>
+    <style>
+        :root {
+            --bg-color: #121418;
+            --card-bg: #1a1e24;
+            --accent-color: #c5a059;
+            --accent-hover: #e0b86d;
+            --text-color: #e1e4e8;
+            --text-muted: #8b949e;
+            --border-color: #30363d;
+            --success-color: #238636;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        header {
+            background: linear-gradient(to bottom, #1f242d, var(--bg-color));
+            border-bottom: 2px solid var(--accent-color);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 0.5rem 0;
+            color: var(--accent-color);
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        p.subtitle {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .progress-container {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar-bg {
+            background-color: var(--border-color);
+            border-radius: 6px;
+            height: 16px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .progress-bar-fill {
+            background-color: var(--accent-color);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-color);
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        button.filter-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        button.filter-btn.active, button.filter-btn:hover {
+            background-color: var(--accent-color);
+            color: #000;
+            font-weight: bold;
+            border-color: var(--accent-color);
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .section-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            margin: 0;
+            color: var(--accent-color);
+            font-size: 1.25rem;
+            text-transform: capitalize;
+        }
+
+        .section-counter {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.05);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 250px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .item-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .item-list::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .item-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .item-list label {
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            word-break: break-word;
+        }
+
+        input[type="checkbox"] {
+            accent-color: var(--accent-color);
+            width: 1.1rem;
+            height: 1.1rem;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"]:checked + label {
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .actions-bar {
+            margin-top: 2rem;
+            text-align: right;
+        }
+
+        button.reset-btn {
+            background-color: #da3633;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        button.reset-btn:hover {
+            background-color: #b31d18;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Assassin's Creed Valhalla</h1>
+        <p class="subtitle">Complete 100% Quest, location and DLC tracker</p>
+    </header>
+
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-info">
+                <span>Overall Progress</span>
+                <span id="total-progress-text">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div id="total-progress-bar" class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="search-input" placeholder="Search quest, activity, location...">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="completed">Done</button>
+                <button class="filter-btn" data-filter="active">Not Done</button>
+            </div>
+        </div>
+
+        <div id="sections-container" class="sections-grid"></div>
+
+        <div class="actions-bar">
+            <button class="reset-btn" onclick="resetProgress()">Reset tracking</button>
+        </div>
+    </div>
+
+    <script>
+        const valhallaData = {
+            "Main Quests": [
+                "Battle for Northern Way (Rygjafylke)", "Ravensthorpe", "Hidden Ones Saga", 
+                "The Kingsmakers Saga (Ledecestrescire)", "The Song of Soma (Grantebridgescire)", 
+                "The Tale of Thegn Oswald (East Anglia)", "The Paladins Stone (Oxenefordscire)", 
+                "The City of War (Lunden)", "The Book of Dragons (Sciropescire)", 
+                "The Instrument of Ancients (Cent)", "A Breviary of Broken Hearts (Essexe)", 
+                "The Siege of Portcestre (Suthsexe)", "The Lay of Hunwald (Lincolnscire)", 
+                "The City of Greed (Jorvik)", "The Savings of Halfdan (Eurviscire)", 
+                "A Tale of Wicker-Fire (Glowecestrescire)", "The Tale of Two Jarls (Snotinghamscire)", 
+                "The City of Faith (Wincestre)", "In the Hall of the Slain (Hordafylke)", 
+                "The Prophecies of the King (Hamtunscire)", "Vinland Saga", "The Fate of the High Ones (Asgard)", 
+                "The Saga of Snows (Jotunheim)", "The Forgotten Saga", "The Last Chapter", 
+                "The Saga of Saint George (River Raids)", "Tomb of the Fallen"
+            ],
+            "Location Activities (Main Map)": [
+                "Rygjafylke (Wealth, Mysteries, Artifacts)", "Hordafylke (Wealth, Mysteries, Artifacts)", 
+                "Ledecestrescire (Wealth, Mysteries, Artifacts)", "Grantebridgescire (Wealth, Mysteries, Artifacts)", 
+                "East Anglia (Wealth, Mysteries, Artifacts)", "Lunden (Wealth, Mysteries, Artifacts)", 
+                "Oxenefordscire (Wealth, Mysteries, Artifacts)", "Sciropescire (Wealth, Mysteries, Artifacts)", 
+                "Cent (Wealth, Mysteries, Artifacts)", "Lincolnscire (Wealth, Mysteries, Artifacts)", 
+                "Essexe (Wealth, Mysteries, Artifacts)", "Suthsexe (Wealth, Mysteries, Artifacts)", 
+                "Eurviscire (Wealth, Mysteries, Artifacts)", "Jorvik (Wealth, Mysteries, Artifacts)", 
+                "Glowecestrescire (Wealth, Mysteries, Artifacts)", "Snotinghamscire (Wealth, Mysteries, Artifacts)", 
+                "Wincestre (Wealth, Mysteries, Artifacts)", "Hamtunscire (Wealth, Mysteries, Artifacts)", 
+                "Vinland (Wealth, Mysteries, Artifacts)", "Asgard & Jotunheim (Mysteries, Wealth)"
+            ],
+            "Order of the Ancients": [
+                "Zealots (Beorhtsige, Berchthun, Callin a ďalší)", 
+                "Warden of Faith (The Bell, The Gallows, The Oil)", 
+                "Warden of Law (The Adze, The Dart, The Firebrand)", 
+                "Warden of War (Kjotve, The Anvil, The Arrow, The Ash-Spear)", 
+                "Warden of Wealth (The Instrument, The Keel, The Lyre)", 
+                "Maegesters & Grand Maegester (The Father)"
+            ],
+            "River Raids": [
+                "River Exe (Keats Farm, Treasures, Rations)", 
+                "River Severn (Wyther Farm, Forward Camp)", 
+                "River Dee", "River Erriff", "River Rhine & River Danube (Mastery)"
+            ],
+            "Small DLCs": [
+                "The Legend of Beowulf (A Fiend Out of Hell, Prey in High Wall)", 
+                "The Way of the Berserker (The Mysterious Berserker, Vengeance)", 
+                "Discovery Tour: Viking Age Quests"
+            ],
+            "Wrath of the Druids (Ireland DLC)": [
+                "Dublin & Írske obchodné posty", "Main Quests (Blood on the Leaves, Into the Fog)", 
+                "Trial of the Morrigan & Druid Cairns", "Children of Danu"
+            ],
+            "Siege of Paris (Le France DLC)": [
+                "Main Quests (The Toll of Morituri, Strangers at the Gate)", 
+                "Rebellion Missions & Frankish Nobles", "Hidden Ones Bureau in Paris"
+            ],
+            "Dawn of Ragnarök (Svartalfheim DLC)": [
+                "Main Quests (Gift to the God, Finding Frithejof)", 
+                "Muspelheim & Jotunheim Arenas", "Dwarven Shelters & Mythical Armor Sets"
+            ]
+        };
+
+        let userProgress = JSON.parse(localStorage.getItem('ac_valhalla_progress')) || {};
+
+        function initApp() {
+            renderSections();
+            updateProgress();
+
+            document.getElementById('search-input').addEventListener('input', filterItems);
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    filterItems();
+                });
+            });
+        }
+
+        function renderSections() {
+            const container = document.getElementById('sections-container');
+            container.innerHTML = '';
+
+            for (const [sectionName, items] of Object.entries(valhallaData)) {
+                const card = document.createElement('div');
+                card.className = 'section-card';
+                card.dataset.section = sectionName;
+
+                let completedCount = items.filter(item => userProgress[sectionName + '-' + item]).length;
+
+                card.innerHTML = `
+                    <div class="section-header">
+                        <h3 class="section-title">${sectionName}</h3>
+                        <span class="section-counter" id="counter-${escapeId(sectionName)}">${completedCount}/${items.length}</span>
+                    </div>
+                    <ul class="item-list">
+                        ${items.map((item) => {
+                            const itemId = sectionName + '-' + item;
+                            const isChecked = userProgress[itemId] ? 'checked' : '';
+                            const escapedItem = item.replace(/'/g, "\\'");
+                            return `
+                                <li>
+                                    <input type="checkbox" id="${escapeId(itemId)}" ${isChecked} onchange="toggleItem('${sectionName}', '${escapedItem}')">
+                                    <label for="${escapeId(itemId)}">${item}</label>
+                                </li>
+                            `;
+                        }).join('')}
+                    </ul>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        function toggleItem(sectionName, item) {
+            const itemId = sectionName + '-' + item;
+            const checkbox = document.getElementById(escapeId(itemId));
+            
+            if (checkbox && checkbox.checked) {
+                userProgress[itemId] = true;
+            } else {
+                delete userProgress[itemId];
+            }
+
+            localStorage.setItem('ac_valhalla_progress', JSON.stringify(userProgress));
+            updateSectionCounter(sectionName);
+            updateProgress();
+        }
+
+        function updateSectionCounter(sectionName) {
+            const items = valhallaData[sectionName];
+            const completedCount = items.filter(item => userProgress[sectionName + '-' + item]).length;
+            const counterEl = document.getElementById(`counter-${escapeId(sectionName)}`);
+            if(counterEl) {
+                counterEl.textContent = `${completedCount}/${items.length}`;
+            }
+        }
+
+        function updateProgress() {
+            let totalItems = 0;
+            let totalCompleted = 0;
+
+            for (const [sectionName, items] of Object.entries(valhallaData)) {
+                totalItems += items.length;
+                totalCompleted += items.filter(item => userProgress[sectionName + '-' + item]).length;
+            }
+
+            const percentage = totalItems > 0 ? Math.round((totalCompleted / totalItems) * 100) : 0;
+            
+            document.getElementById('total-progress-text').textContent = `${percentage}% (${totalCompleted}/${totalItems})`;
+            document.getElementById('total-progress-bar').style.width = `${percentage}%`;
+        }
+
+        function filterItems() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+
+            document.querySelectorAll('.section-card').forEach(card => {
+                const sectionName = card.dataset.section;
+                const items = valhallaData[sectionName];
+                let visibleItemsInCard = 0;
+
+                const listItems = card.querySelectorAll('.item-list li');
+                listItems.forEach((li, index) => {
+                    const itemName = items[index];
+                    const itemId = sectionName + '-' + itemName;
+                    const isChecked = !!userProgress[itemId];
+
+                    const matchesSearch = itemName.toLowerCase().includes(query);
+                    let matchesFilter = true;
+
+                    if (activeFilter === 'completed') matchesFilter = isChecked;
+                    if (activeFilter === 'active') matchesFilter = !isChecked;
+
+                    if (matchesSearch && matchesFilter) {
+                        li.style.display = 'flex';
+                        visibleItemsInCard++;
+                    } else {
+                        li.style.display = 'none';
+                    }
+                });
+
+                if (visibleItemsInCard === 0 && query !== '') {
+                    card.style.display = 'none';
+                } else {
+                    card.style.display = 'flex';
+                }
+            });
+        }
+
+        function escapeId(str) {
+            return str.replace(/[^a-zA-Z0-9]/g, '_');
+        }
+
+        function resetProgress() {
+            if (confirm('Naozaj chceš vymazať celý svoj postup Valhally? Táto akcia je nevratná.')) {
+                userProgress = {};
+                localStorage.removeItem('ac_valhalla_progress');
+                renderSections();
+                updateProgress();
+            }
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
